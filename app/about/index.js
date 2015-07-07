@@ -6,7 +6,7 @@ import uiRouter from 'ui-router';
 
 angular.module('starter.about', [uiRouter])
   .controller('AboutCtrl', $scope => {
-    $scope.name = "about";
+    $scope.name = 'about';
   })
   .config($stateProvider => {
     $stateProvider
