@@ -9,16 +9,16 @@ import './home';
 
 // Require
 angular.module('starter', [
-		uiRouter,
-		'starter.about',
-		'starter.home'
-	])
-	.config(($stateProvider, $urlRouterProvider, $locationProvider) => {
-		$urlRouterProvider.otherwise('/');
-		$locationProvider.html5Mode(true);
-	})
-	.controller('MainCtrl', $scope => {
-		$scope.people = [
-			'john', 'peter', 'bart', 'pen1'
-		];
-	});
+    uiRouter,
+    'starter.about',
+    'starter.home'
+  ])
+  .config(($stateProvider, $urlRouterProvider, $locationProvider) => {
+    $urlRouterProvider.otherwise('/');
+    $locationProvider.html5Mode(true);
+  })
+  .controller('MainCtrl', $scope => {
+    $scope.people = [
+      'john', 'peter', 'bart', 'pen1'
+    ];
+  });
