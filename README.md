@@ -4,7 +4,23 @@
 
 This is just an angular **starter** project
 
-Install like:
+## Instructions
+
+To run the webpack dev server:
+
 ```
-I am 12 and what is this
+gulp webpack:server
+```
+
+To build the project
+
+```
+gulp build
+```
+
+Building in production:
+
+```
+NODE_ENV=production gulp build
+gulp --environment=production build
 ```

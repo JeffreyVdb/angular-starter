@@ -35,6 +35,16 @@ function webpackConfig() {
 	let initialConfig = WEBPACK_CONFIG;
 	let cfg;
 	if (ENV === ENV_DEV) {
+		// Add the webpack hot dev server
+		let appEntry = initialConfig.entry.app;
+		if (_.isString(appEntry)) {
+			appEntry = [appEntry];
+		}
+
+		// Add webpack hot server
+		appEntry.unshift('webpack/hot/dev-server');
+		initialConfig.entry.app = appEntry;
+
 		cfg = {
 			devtool: 'eval',
 			debug: true,

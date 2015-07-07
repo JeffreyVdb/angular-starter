@@ -9,7 +9,7 @@ module.exports = {
 	cache: true,
 	context: path.join(__dirname, 'app'),
 	entry: {
-			app: ['webpack/hot/dev-server', './app.js']
+			app: './app.js'
 	},
 	output: {
 		path: DIST_BASE,
