@@ -1,8 +1,11 @@
-<div class="features">
-	<div class="block" ng-repeat="feature in features">
-		<h1>{{feature.name}}</h1>
-		<p>{{feature.desc}}</p>
-	</div>
+<h1>Features</h1>
+<div class="cards" layout="row" flex>
+	<md-card ng-repeat="feature in features">
+		<md-card-content>
+			<h1>{{feature.name}}</h1>
+			<p>{{feature.desc}}</p>
+		</md-card-content>
+	</md-card>
 </div>
 
 <p>

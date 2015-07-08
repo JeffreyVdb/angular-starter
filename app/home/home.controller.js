@@ -10,7 +10,7 @@ class HomeCtrl
       },
       {
         name: 'Webpack',
-        desc: 'Some browserify replacer'
+        desc: 'An alternative to browserify.'
       }
     ];
   }

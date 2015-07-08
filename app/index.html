@@ -1,12 +1,30 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="starter">
 <head>
-	<meta charset="UTF-8">
-	<title>Just the index file</title>
-	<base href="/">
-	<script type="text/javascript" src="app.bundle.js"></script>
+  <meta charset="UTF-8">
+  <title>Just the index file</title>
+  <base href="/">
+
+  <!-- build:css app.css -->
+  <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="../node_modules/angular-material/angular-material.min.css" />
+  <!-- endbuild -->
+
+  <script type="text/javascript" src="app.bundle.js"></script>
 </head>
 <body>
-	<ui-view />
+  <md-toolbar layout="row">
+    <!--The left side is hidden when the screen size is larger than small -->
+    <md-button class="menu" aria-label="menu" hide-gt-sm><i class="fa fa-bars"></i></md-button>
+    <!--The right side-->
+    <h1> The Hidden Hamburger </h1>
+  </md-toolbar>
+  <div layout="row" flex>
+    <div layout="column" flex id="content">
+      <md-content layout="column" flex class="md-padding">  
+        <ui-view />
+      </md-content>
+    </div>
+  </div>
 </body>
 </html>

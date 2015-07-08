@@ -3,6 +3,7 @@
 // Load angular
 import angular from 'angular';
 import uiRouter from 'ui-router';
+import ngMaterial from 'angular-material';
 
 import './about';
 import './home';
@@ -10,6 +11,7 @@ import './home';
 // Require
 angular.module('starter', [
     uiRouter,
+    ngMaterial,
     'starter.about',
     'starter.home'
   ])

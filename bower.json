@@ -1,0 +1,6 @@
+{
+  "name": "angular-starter",
+  "dependencies": {
+    "font-awesome": "~4.3.0"
+  }
+}

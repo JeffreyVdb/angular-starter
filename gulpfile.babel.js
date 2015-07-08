@@ -1,20 +1,19 @@
-/*globals require: false, process: false, __dirname: false */
+/*globals require: false, process: false */
 'use strict';
 
 import _ from 'lodash';
-import path from 'path';
 import gulp from 'gulp';
 import loadPlugins from 'gulp-load-plugins';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 import runSequence from 'run-sequence';
 import ngAnnonatePlugin from 'ng-annotate-webpack-plugin';
+import mergeStreams from 'merge-stream';
 
-const APP_BASE = path.join(__dirname, 'app');
 const ENV_PROD = 'production';
 const ENV_DEV = 'development';
 const $ = loadPlugins();
-const PROJECT_NAME = "Angular Starter";
+const PROJECT_NAME = 'Angular Starter';
 const WEBPACK_CONFIG = require('./webpack.config.js');
 const SERVER_PORT = 1337;
 const ENV = process.env.NODE_ENV || $.util.env.environment || ENV_DEV;
@@ -52,12 +51,11 @@ function webpackConfig() {
         new webpack.HotModuleReplacementPlugin()
       ]
     };
-  }
-  else if (ENV === ENV_PROD) {
+  } else if (ENV === ENV_PROD) {
     initialConfig.plugins.push(
       new webpack.DefinePlugin({
-        "process.env": {
-          "NODE_ENV": JSON.stringify(ENV)
+        'process.env': {
+          'NODE_ENV': JSON.stringify(ENV)
         }
       }),
       new ngAnnonatePlugin({
@@ -78,32 +76,45 @@ function webpackConfig() {
 function runWebpack(config, cb) {
   let colors = true;
 
-  if (! cb) {
+  if (!cb) {
     return webpack(config);
-  }
-  else {
+  } else {
     return webpack(config, (err, stats) => {
       if (err) {
-        throw new $.util.PluginError("webpack-dev-server", err);
+        throw new $.util.PluginError('webpack-dev-server', err);
       }
 
-      $.util.log("[webpack-dev-server]", stats.toString({ colors }));
+      $.util.log('[webpack-dev-server]', stats.toString({colors}));
       cb();
     });
   }
 }
 
-gulp.task('html', () => {
-  const assets = $.useref.assets({ searchPath: '{.tmp,app}' });
+// Copy assets to public directory
+gulp.task('copy', () => {
+  let paths = [{
+    src: ['./bower_components/font-awesome/fonts/**'],
+    dest: './dist/fonts'
+  }];
 
-  return gulp.src('app/**/*.html')
+  let tasks = paths.map(path => {
+    return gulp.src(...path.src).pipe(gulp.dest(path.dest));
+  });
+
+  return mergeStreams(tasks);
+});
+
+gulp.task('html', () => {
+  const assets = $.useref.assets({searchPath: '{.tmp,app}'});
+
+  return gulp.src('app/index.html')
     .pipe(assets)
     // Remove any unused CSS
     // Note: If not using the Style Guide, you can delete it from
     // the next line to only include styles your project uses.
     .pipe(onProduction(() => $.if('*.css', $.uncss({
       html: [
-        'app/index.html'
+        'app/**/*.html'
       ]
     }))))
 
@@ -115,11 +126,11 @@ gulp.task('html', () => {
 
     // Minify any HTML
     .pipe(onProduction(() => $.if('*.html', $.minifyHtml())))
+
     // Output files
     .pipe(gulp.dest('dist'))
-    .pipe($.size({ title: 'html' }));
+    .pipe($.size({title: 'html'}));
 });
-
 
 gulp.task('webpack:build', cb => runWebpack(webpackConfig(), cb));
 gulp.task('webpack:server', () => {
@@ -127,20 +138,22 @@ gulp.task('webpack:server', () => {
   let server = new WebpackDevServer(runWebpack(config), {
     contentBase: './' + config.output.publicPath,
     publicPath: '/',
-    stats: { colors: true },
+    stats: {
+      colors: true
+    },
     hot: true
   });
 
   server.listen(SERVER_PORT, 'localhost', err => {
     if (err) {
-      throw new $.util.PluginError("webpack-dev-server", err);
+      throw new $.util.PluginError('webpack-dev-server', err);
     }
 
-    $.util.log("[webpack-dev-server]", `http://localhost:${SERVER_PORT}/webpack-dev-server/`);
+    $.util.log('[webpack-dev-server]', `http://localhost:${SERVER_PORT}/webpack-dev-server/`);
   });
 
   // gulp.watch('./app/**/*.html', 'html');
 });
 
-gulp.task('build', cb => runSequence(['html', 'webpack:build'], cb));
+gulp.task('build', cb => runSequence(['copy', 'html', 'webpack:build'], cb));
 gulp.task('default', () => runSequence('html', 'webpack:server'));
